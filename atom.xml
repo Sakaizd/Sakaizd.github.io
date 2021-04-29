@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">Sakaizd 的个人博客</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2021-04-29T21:14:42&#43;08:00</updated>
+    <updated>2021-04-29T21:23:58&#43;08:00</updated>
     <id>https://Sakaizd.github.io/</id>
     <link rel="alternate" type="text/html" href="https://Sakaizd.github.io/" />
     <link rel="self" type="application/atom&#43;xml" href="https://Sakaizd.github.io/atom.xml" />
@@ -20,22 +20,23 @@
             <title type="text">JNU 锐捷使用多网卡/开WIFI指北</title>
             <link rel="alternate" type="text/html" href="https://Sakaizd.github.io/posts/ruijie/" />
             <id>https://Sakaizd.github.io/posts/ruijie/</id>
-            <updated>2021-04-29T21:11:30&#43;08:00</updated>
+            <updated>2021-04-29T21:23:32&#43;08:00</updated>
             <published>2021-04-29T21:10:02&#43;08:00</published>
             <author>
                     <name>Sakaizd</name>
                     <uri>https://Sakaizd.github.io</uri>
                     <email>Sakaizd@gmail.com</email>
                     </author>
-            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Motivation &amp;amp; 实现 学校的校园网用的是锐捷，由于有多网卡（如虚拟机、电脑开WiFi）需求不得不干……</summary>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Motivation &amp;amp; 实现 学校的校园网用的是锐捷，由于个人有多网卡（如虚拟机、电脑开WiFi）需求不得……</summary>
             
                 <content type="html">&lt;h1 id=&#34;motivation--实现&#34;&gt;Motivation &amp;amp; 实现&lt;/h1&gt;
-&lt;p&gt;学校的校园网用的是锐捷，由于有多网卡（如虚拟机、电脑开WiFi）需求不得不干掉锐捷。实测在任务处理器/ Taskkill 掉锐捷不会断开连接，但是校园网会偶尔断开需要锐捷重连。综上所述写了两个脚本用于重连，保存为.bat即可食用。&lt;/p&gt;
+&lt;p&gt;学校的校园网用的是锐捷，由于个人有多网卡（如虚拟机、电脑开WiFi）需求不得不干掉锐捷。实测在任务处理器/ Taskkill 掉锐捷不会断开连接，且重连后若干秒后锐捷才会触发多网卡检测，又因为校园网会偶尔断开，此时需要锐捷重连。综上，在此分享了两个脚本用于重连，保存为.bat即可食用。&lt;/p&gt;
 &lt;h1 id=&#34;原理&#34;&gt;原理&lt;/h1&gt;
 &lt;ol&gt;
 &lt;li&gt;开机连上网后 taskkill 8021x.exe。&lt;/li&gt;
 &lt;li&gt;通过不断 Ping 外网/学校DNS判断是否断开连接。&lt;/li&gt;
 &lt;li&gt;证实网络不通后重连（也是通过Ping外网来判断是否已建立连接）。&lt;/li&gt;
+&lt;li&gt;重连后马上 taskkill 8021x.exe 防止多网卡检测。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h1 id=&#34;脚本&#34;&gt;脚本&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;脚本第一行用于获取管理员权限&lt;/strong&gt; &lt;br&gt;
