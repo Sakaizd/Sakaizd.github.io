@@ -23,10 +23,98 @@
         
             <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
         
-        <lastBuildDate>Mon, 22 Mar 2021 00:04:31 &#43;0800</lastBuildDate>
+        <lastBuildDate>Thu, 29 Apr 2021 21:14:42 &#43;0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss&#43;xml" href="https://Sakaizd.github.io/rss.xml" />
         
+        
+            <item>
+                <title>JNU 锐捷使用多网卡/开WIFI指北</title>
+                <link>https://Sakaizd.github.io/posts/ruijie/</link>
+                <guid isPermaLink="true">https://Sakaizd.github.io/posts/ruijie/</guid>
+                <pubDate>Thu, 29 Apr 2021 21:10:02 &#43;0800</pubDate>
+                
+                    <author>Sakaizd@gmail.com (Sakaizd)</author>
+                
+                <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
+                
+                    <description>&lt;h1 id=&#34;motivation--实现&#34;&gt;Motivation &amp;amp; 实现&lt;/h1&gt;
+&lt;p&gt;学校的校园网用的是锐捷，由于有多网卡（如虚拟机、电脑开WiFi）需求不得不干掉锐捷。实测在任务处理器/ Taskkill 掉锐捷不会断开连接，但是校园网会偶尔断开需要锐捷重连。综上所述写了两个脚本用于重连，保存为.bat即可食用。&lt;/p&gt;
+&lt;h1 id=&#34;原理&#34;&gt;原理&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;开机连上网后 taskkill 8021x.exe。&lt;/li&gt;
+&lt;li&gt;通过不断 Ping 外网/学校DNS判断是否断开连接。&lt;/li&gt;
+&lt;li&gt;证实网络不通后重连（也是通过Ping外网来判断是否已建立连接）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;脚本&#34;&gt;脚本&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;脚本第一行用于获取管理员权限&lt;/strong&gt; &lt;br&gt;
+开机时 taskill 锐捷：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;%1 mshta vbscript:CreateObject(&amp;quot;Shell.Application&amp;quot;).ShellExecute(&amp;quot;cmd.exe&amp;quot;,&amp;quot;/c %~s0 ::&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;runas&amp;quot;,1)(window.close)&amp;amp;&amp;amp;exit
+
+@echo off
+:while
+ping -n 1 223.5.5.5 &amp;gt; nul
+if %errorlevel% leq 0 (
+taskkill /F /IM 8021x.exe /T
+echo reconnected
+)  else (
+echo connecting
+goto :while
+)  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;掉线检测+重连：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;%1 mshta vbscript:CreateObject(&amp;quot;Shell.Application&amp;quot;).ShellExecute(&amp;quot;cmd.exe&amp;quot;,&amp;quot;/c %~s0 ::&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;runas&amp;quot;,1)(window.close)&amp;amp;&amp;amp;exit
+@echo off
+
+:loop
+ping -n 1 192.168.10.8 &amp;gt; nul
+if %errorlevel% leq 0 (
+echo %time% &amp;quot;normal&amp;quot;
+choice /t 10 /d y /n &amp;gt;nul
+goto :loop
+)  else (
+echo &amp;quot;go to second check&amp;quot;
+goto :secondCheck
+)
+
+:secondCheck
+ping -n 1 223.5.5.5 &amp;gt; nul
+if %errorlevel% leq 0 (
+echo &amp;quot;second check:&amp;quot;
+echo %time% &amp;quot;normal&amp;quot;
+goto :loop
+)else (
+echo &amp;quot;reconnetcing&amp;quot;
+cd C:\Program Files\Ruijie Networks\Ruijie Supplicant
+.\RuijieSupplicant.exe
+goto :connectCheck
+)
+
+:connectCheck
+ping -n 1 223.5.5.5 &amp;gt; nul
+if %errorlevel% leq 0 (
+echo &amp;quot;reconnected&amp;quot;
+taskkill /F /IM 8021x.exe /T
+goto :loop
+)  else (
+echo connecting
+goto :connectCheck
+)  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;在电脑上共享WIFI时需要将手机/ iPad 的 WiFi 设置中的网络代理设为电脑的代理（我用的是Clash ）防止被扫到单账号多个 Useragent 导致账号被封。&lt;/p&gt;
+</description>
+                
+                
+                
+                
+                
+                    
+                        
+                    
+                        
+                    
+                
+            </item>
         
             <item>
                 <title>Hello World</title>
@@ -39,7 +127,7 @@
                 <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
                 
                     <description>&lt;h1 id=&#34;hello-world&#34;&gt;Hello World&lt;/h1&gt;
-&lt;pre&gt;&lt;code&gt; markdown test&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这是一个&lt;a href=&#34;https://gohugo.io/&#34;&gt;HUGO&lt;/a&gt;博客，主题为&lt;a href=&#34;https://github.com/reuixiy/hugo-theme-meme&#34;&gt;MemE&lt;/a&gt;。&lt;/p&gt;
 </description>
                 
                 
