@@ -475,6 +475,8 @@ goto :connectCheck
         </div>
 
         
+            <div id="disqus_thread"></div>
+        
 
         
 
@@ -530,6 +532,34 @@ goto :connectCheck
 
 
     
+
+        
+            <script>
+    function loadComments() {
+        if (typeof DISQUS === 'undefined') {
+            var disqus_config = function() {
+                this.page.url = 'https:\/\/Sakaizd.github.io\/posts\/ruijie\/';
+                this.page.identifier = '\/posts\/ruijie\/';
+                this.page.title = 'JNU 锐捷使用多网卡\/开WIFI指北';
+            };
+            (function() {
+                var d = document, s = d.createElement('script'); s.async = true;
+                s.src = 'https://sakaizd.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        } else {
+            DISQUS.reset({
+                reload: true,
+                config: function() {
+                    this.page.url = 'https:\/\/Sakaizd.github.io\/posts\/ruijie\/';
+                    this.page.identifier = '\/posts\/ruijie\/';
+                    this.page.title = 'JNU 锐捷使用多网卡\/开WIFI指北';
+                }
+            });
+        }
+    }
+</script>
 
         
 
