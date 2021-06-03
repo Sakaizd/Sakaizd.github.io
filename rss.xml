@@ -23,7 +23,7 @@
         
             <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
         
-        <lastBuildDate>Thu, 29 Apr 2021 21:36:49 &#43;0800</lastBuildDate>
+        <lastBuildDate>Thu, 03 Jun 2021 19:44:22 &#43;0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss&#43;xml" href="https://Sakaizd.github.io/rss.xml" />
         
@@ -49,43 +49,42 @@
 &lt;/ol&gt;
 &lt;h1 id=&#34;脚本&#34;&gt;脚本&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;脚本第一行用于获取管理员权限&lt;/strong&gt; &lt;br&gt;
-开机时 taskill 锐捷：&lt;/p&gt;
+开机后能 ping 通外网后 taskill 锐捷：&lt;br&gt;
+掉线检测 + 重连：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;%1 mshta vbscript:CreateObject(&amp;quot;Shell.Application&amp;quot;).ShellExecute(&amp;quot;cmd.exe&amp;quot;,&amp;quot;/c %~s0 ::&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;runas&amp;quot;,1)(window.close)&amp;amp;&amp;amp;exit
 
 @echo off
-:while
-ping -n 1 223.5.5.5 &amp;gt; nul
+
+:start
+ping -n 1 192.168.11.8 &amp;gt; nul
 if %errorlevel% leq 0 (
 taskkill /F /IM 8021x.exe /T
-echo reconnected
+goto :pingLoop
 )  else (
 echo connecting
-goto :while
-)  
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;掉线检测+重连：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;%1 mshta vbscript:CreateObject(&amp;quot;Shell.Application&amp;quot;).ShellExecute(&amp;quot;cmd.exe&amp;quot;,&amp;quot;/c %~s0 ::&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;runas&amp;quot;,1)(window.close)&amp;amp;&amp;amp;exit
-@echo off
+goto :start
+)
 
-:loop
-ping -n 1 192.168.10.8 &amp;gt; nul
+:pingLoop
+ping -n 1 192.168.11.8 &amp;gt; nul
 if %errorlevel% leq 0 (
 echo %time% &amp;quot;normal&amp;quot;
-choice /t 10 /d y /n &amp;gt;nul
-goto :loop
+choice /t 1 /d y /n &amp;gt;nul
+cls
+goto :pingLoop
 )  else (
-echo &amp;quot;go to second check&amp;quot;
+echo &amp;quot;May be disconnected, go to second check&amp;quot;
 goto :secondCheck
 )
 
 :secondCheck
 ping -n 1 223.5.5.5 &amp;gt; nul
 if %errorlevel% leq 0 (
-echo &amp;quot;second check:&amp;quot;
+echo &amp;quot;False alarm&amp;quot;
 echo %time% &amp;quot;normal&amp;quot;
-goto :loop
+goto :pingLoop
 )else (
-echo &amp;quot;reconnetcing&amp;quot;
+echo &amp;quot;Disconnect confirmed&amp;quot;
 cd C:\Program Files\Ruijie Networks\Ruijie Supplicant
 .\RuijieSupplicant.exe
 goto :connectCheck
@@ -94,15 +93,15 @@ goto :connectCheck
 :connectCheck
 ping -n 1 223.5.5.5 &amp;gt; nul
 if %errorlevel% leq 0 (
-echo &amp;quot;reconnected&amp;quot;
+echo &amp;quot;Reconnected&amp;quot;
 taskkill /F /IM 8021x.exe /T
-goto :loop
+goto :pingLoop
 )  else (
 echo connecting
 goto :connectCheck
-)  
+)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;在电脑上共享WIFI时需要将手机/ iPad 的 WiFi 设置中的网络代理设为电脑的代理（我用的是Clash ）防止被扫到单账号多个 Useragent 导致账号被封。&lt;/p&gt;
+&lt;p&gt;在电脑上共享WIFI时需要将手机/ iPad 的 WiFi 设置中的网络代理设为电脑上自己的代理防止被扫到单账号多个 Useragent 导致账号被封。&lt;/p&gt;
 </description>
                 
                 
